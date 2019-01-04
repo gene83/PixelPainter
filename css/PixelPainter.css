@@ -1,0 +1,22 @@
+* {
+  box-sizing: border-box;
+}
+
+.row {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.cell {
+  height: 20px;
+  width: 20px;
+  border: dotted 1px black;
+}
+
+.swatch {
+  margin: 20px;
+}
+
+.swatch .cell {
+  background-color: blue;
+}
