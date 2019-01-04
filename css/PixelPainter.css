@@ -2,15 +2,33 @@
   box-sizing: border-box;
 }
 
+body {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+}
+
+#pixelPainter {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.controlPanel {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+}
+
 .row {
   display: flex;
   flex-flow: row nowrap;
 }
 
 .cell {
-  height: 20px;
-  width: 20px;
-  border: dotted 1px black;
+  height: 10px;
+  width: 10px;
+  border: dotted 1px lightgray;
 }
 
 .swatch {
@@ -18,5 +36,21 @@
 }
 
 .swatch .cell {
+  height: 20px;
+  width: 20px;
+  margin: 2px;
+  border: solid 2px black;
   background-color: blue;
+}
+
+.clear {
+  padding: 5px;
+  margin: 5px;
+  border: 1px solid black;
+}
+
+.erase {
+  padding: 5px;
+  margin: 5px;
+  border: 1px solid black;
 }
