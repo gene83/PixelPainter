@@ -8,10 +8,10 @@ const pixelPainter = (function() {
   const swatchCells = swatch.getElementsByClassName("cell");
   const controlPanel = document.createElement("div");
   const colorPicker = document.createElement("input");
-  // const fillButton = document.createElement("div");
+  const fillButton = document.createElement("div");
   let activeColor = "";
   let mouseDown = false;
-  // let targetColor = "";
+  let fill = false;
 
   function gridMaker(width, height, location) {
     for (let y = 0; y < height; y++) {
@@ -37,11 +37,16 @@ const pixelPainter = (function() {
   }
 
   function paintClick() {
+    if (fill) {
+      return;
+    }
     this.style.backgroundColor = activeColor;
   }
 
   function paintDrag() {
-    if (mouseDown) {
+    if (fill) {
+      return;
+    } else if (mouseDown) {
       this.style.backgroundColor = activeColor;
     }
   }
@@ -68,6 +73,19 @@ const pixelPainter = (function() {
     }
   }
 
+  function fillSwitch() {
+    fill = !fill;
+  }
+
+  function initiateFill() {
+    if (fill) {
+      const node = this;
+      const targetColor = this.style.backgroundColor;
+      const replacementColor = activeColor;
+      floodFill(node, targetColor, replacementColor);
+    }
+  }
+
   function floodFill(node, targetColor, replacementColor) {
     let cellColor = node.style.backgroundColor;
     let x = Number(node.getAttribute("data-x"));
@@ -76,14 +94,12 @@ const pixelPainter = (function() {
       return;
     } else if (cellColor !== targetColor) {
       return;
-    } else if (x > 1 && y > 1) {
-      node.style.backgroundColor = replacementColor;
-
-      floodFill(getCell(x, y - 1), targetColor, replacementColor);
-      floodFill(getCell(x, y + 1), targetColor, replacementColor);
-      floodFill(getCell(x - 1, y), targetColor, replacementColor);
-      floodFill(getCell(x + 1, y), targetColor, replacementColor);
     }
+    node.style.backgroundColor = replacementColor;
+    floodFill(getCell(x, y - 1), targetColor, replacementColor);
+    floodFill(getCell(x, y + 1), targetColor, replacementColor);
+    floodFill(getCell(x - 1, y), targetColor, replacementColor);
+    floodFill(getCell(x + 1, y), targetColor, replacementColor);
   }
 
   const palette = [
@@ -121,19 +137,19 @@ const pixelPainter = (function() {
   controlPanel.className = "controlPanel";
   colorPicker.className = "color";
   colorPicker.type = "color";
-  // fillButton.className = "fillButton";
+  fillButton.className = "fillButton";
 
   pix.appendChild(grid);
   pix.appendChild(controlPanel);
   controlPanel.appendChild(swatch);
   controlPanel.appendChild(colorPicker);
   controlPanel.appendChild(eraserButton);
-  // controlPanel.appendChild(fillButton);
+  controlPanel.appendChild(fillButton);
   controlPanel.appendChild(clearButton);
 
   eraserButton.innerHTML = "Eraser";
   clearButton.innerHTML = "Clear";
-  // fillButton.innerHTML = "fill";
+  fillButton.innerHTML = "fill";
 
   //event listeners to track if mouse is down
   document.body.addEventListener("mousedown", function() {
@@ -148,7 +164,7 @@ const pixelPainter = (function() {
     gridCells[i].style.backgroundColor = "transparent";
     gridCells[i].addEventListener("click", paintClick);
     gridCells[i].addEventListener("mouseover", paintDrag);
-    // gridCells[i].addEventListener("click", pixelPainter.floodFill);
+    gridCells[i].addEventListener("click", initiateFill);
   }
 
   //add select color event listeners and background colors to swatch cells
@@ -163,14 +179,5 @@ const pixelPainter = (function() {
 
   colorPicker.addEventListener("input", inputColor);
 
-  // fillButton.addEventListener("click", activateFill);
-
-  // console.log(pixelPainter.getCell(0, 0));
-
-  // pixelPainter.getCell(0, 0).style.backgroundColor = "black";
-
-  // console.log(Number(pixelPainter.getCell(0, 0).getAttribute("data-y")));
-  // console.log(pixelPainter.getCell(0, 0).style.backgroundColor);
-
-  // pixelPainter.floodFill(pixelPainter.getCell(33, 33), "transparent", "blue");
+  fillButton.addEventListener("click", fillSwitch);
 })();

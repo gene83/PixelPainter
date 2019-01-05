@@ -3,6 +3,7 @@
 }
 
 body {
+  background-image: url("https://i.pinimg.com/originals/77/d5/89/77d5892879682be6d71f83ff5eda71b4.jpg");
   font-family: sans-serif;
   display: flex;
   flex-flow: column nowrap;
@@ -18,6 +19,7 @@ h1 {
 #pixelPainter {
   display: flex;
   flex-flow: row nowrap;
+  background-color: white;
 }
 
 .grid {
@@ -78,9 +80,9 @@ h1 {
   cursor: pointer;
 }
 
-/* .fillButton {
+.fillButton {
   padding: 5px;
   margin: 5px;
   border: 1px solid black;
   background-color: white;
-} */
+}
